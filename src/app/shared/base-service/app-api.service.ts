@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptionsArgs} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/publishLast';
+import {Observable} from "rxjs/index"; //Observable
+import {publishLast,refCount } from "rxjs/operators";  //操作符
+
 import {AuthService} from './auth.service';
 
 // 定义返回结果的回调函数
@@ -87,9 +86,10 @@ export class AppApiService {
     console.log(options);
 
     this.http
-      .request(fullUrl, options)
-      .publishLast().refCount()
-      .subscribe(response => {
+      .request(fullUrl, options).pipe(
+        publishLast(),
+        refCount(),
+      ).subscribe(response => {
         console.log(response);
         this.resultFilters.forEach(f => {
           response = f(response);

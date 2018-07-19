@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { menus } from './menus';
-import 'rxjs/add/operator/filter';
+import { filter } from "rxjs/operators";  //操作符
 
 @Component({
   selector: 'app-sidebar',
