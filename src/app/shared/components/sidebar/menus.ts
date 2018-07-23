@@ -88,6 +88,26 @@ export const menus = [
     icon: 'fa-pencil',
     routerLink: '/Ckeditor',
     list: []
+  },
+  {
+    index: 4,
+    id: 'parent',
+    item: 'test parent',
+    isActive: false,
+    active: false,
+    plusActive: 'active',
+    minusActive: 'inactive',
+    icon: 'fa-pencil',
+    routerLink: '/Parent',
+    list: [
+      {
+        id: 1,
+        item: 'test child',
+        routerLink: '/Parent/Child',
+        icon: 'fa-list',
+        isActive: false
+      },
+    ]
   }
 ];
 

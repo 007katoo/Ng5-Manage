@@ -1,0 +1,27 @@
+.reuseTab-col {
+    display: inline-block;
+    height: 100%;
+    margin: 0 32px 0 0;
+    box-sizing: border-box;
+    position: relative;
+    transition: color 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    cursor: pointer;
+    text-decoration: none;
+    background-color: white;
+}
+
+.reuseTab-col:hover {
+    color:#40a9ff;
+}
+.reuseTab-col:active {
+    color:#40a9ff;
+    font-weight:500;
+}
+.reusetab-nav {
+    display: block;
+    background-color: #fff;
+    padding:16px 8px;
+    border-bottom:1px solid #d9d9d9;
+    outline:none;
+    user-select:none;
+}

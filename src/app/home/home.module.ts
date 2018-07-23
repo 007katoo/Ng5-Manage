@@ -6,6 +6,8 @@ import {SharedUiModule} from '../shared/shared-ui.module';
 import {SharedComponentsModule} from '../shared/shared-compoents.module';
 import {HeaderComponent} from '../shared/components/header/header.component';
 import {SidebarComponent} from '../shared/components/sidebar/sidebar.component';
+import { TestParentComponent } from './test-parent/test-parent.component';
+import { TestChildComponent } from './test-child/test-child.component';
 
 @NgModule({
   imports: [
@@ -17,7 +19,9 @@ import {SidebarComponent} from '../shared/components/sidebar/sidebar.component';
   declarations: [
     HomeComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    TestParentComponent,
+    TestChildComponent
 ]
 })
 export class HomeModule { }

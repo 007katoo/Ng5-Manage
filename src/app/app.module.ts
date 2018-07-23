@@ -8,6 +8,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { SharedServicesModule } from './shared/shared.services.module';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedUiModule } from './shared/shared-ui.module';
+import { AppReuseStrategy } from './appReuseStrategy';
+import { RouteReuseStrategy } from '@angular/router' 
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { SharedUiModule } from './shared/shared-ui.module';
     SharedServicesModule.forRoot(),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [    
+    { provide: RouteReuseStrategy, useClass: AppReuseStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

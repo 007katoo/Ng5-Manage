@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     sessionStorage.setItem('StatePath1', '-1');
     sessionStorage.setItem('StatePath2', '-1');
+    console.log("test");
   }
 
 }

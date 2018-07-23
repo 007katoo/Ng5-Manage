@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home.component';
 import { AuthGuardService } from '../shared/base-service/auth-guard.service';
+import { TestParentComponent } from './test-parent/test-parent.component';
+import { TestChildComponent } from './test-child/test-child.component';
 
 const routes: Routes = [
   {
@@ -15,7 +17,12 @@ const routes: Routes = [
         { path: 'Profile', loadChildren: './profile/profile.module#ProfileModule' },
         { path: 'Table', loadChildren: './table/table.module#TableModule' },
         { path: 'Bootstrap', loadChildren: './bootstrap/bootstrap.module#BootstrapModule' },
-        { path: 'Ckeditor', loadChildren: './ckeditor/ckeditor.module#CkeditorModule' }
+        { path: 'Ckeditor', loadChildren: './ckeditor/ckeditor.module#CkeditorModule' },
+        { path: 'Parent', component: TestParentComponent,
+          children: [
+            {path: 'Child', component: TestChildComponent,data: {title: 'child', module: '/Parent/Child',reuse:true}},
+          ]
+        }
       ]
     }]
   }
