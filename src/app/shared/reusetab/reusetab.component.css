@@ -13,9 +13,11 @@
 .reuseTab-col:hover {
     color:#40a9ff;
 }
-.reuseTab-col:active {
+.active {
     color:#40a9ff;
     font-weight:500;
+    border-bottom: solid 1px;
+    padding-bottom: 8px;
 }
 .reusetab-nav {
     display: block;

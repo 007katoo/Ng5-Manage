@@ -1,5 +1,22 @@
-<p>
-  parent
-</p>
-<button (click)="tochild()">
-<router-outlet></router-outlet>
+<nz-row [nzGutter]="8">
+  <nz-col nzSpan="12" >
+      <nz-card nzTitle="标题">
+          <nz-tree
+          [(ngModel)]="nodes"
+          [nzCheckable]="true"
+          [nzMultiple]="true"
+          [nzDefaultExpandedKeys]="expandKeys"
+          [nzDefaultCheckedKeys]="checkedKeys"
+          [nzDefaultSelectedKeys]="selectedKeys"
+          [nzDefaultExpandAll]="expandDefault"
+          (nzClick)="mouseAction('click',$event)"
+          (nzDblClick)="mouseAction('dblclick', $event)"
+        >
+        </nz-tree>
+      </nz-card>
+  </nz-col>
+  <nz-col nzSpan="12" >
+    <router-outlet></router-outlet>
+  </nz-col>
+</nz-row>
+

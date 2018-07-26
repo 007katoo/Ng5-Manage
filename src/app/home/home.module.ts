@@ -8,13 +8,15 @@ import {HeaderComponent} from '../shared/components/header/header.component';
 import {SidebarComponent} from '../shared/components/sidebar/sidebar.component';
 import { TestParentComponent } from './test-parent/test-parent.component';
 import { TestChildComponent } from './test-child/test-child.component';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 @NgModule({
   imports: [
     CommonModule,
     HomeRoutingModule,
     SharedUiModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    NgZorroAntdModule
   ],
   declarations: [
     HomeComponent,

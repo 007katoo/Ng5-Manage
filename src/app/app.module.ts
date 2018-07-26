@@ -9,7 +9,8 @@ import { SharedServicesModule } from './shared/shared.services.module';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedUiModule } from './shared/shared-ui.module';
 import { AppReuseStrategy } from './appReuseStrategy';
-import { RouteReuseStrategy } from '@angular/router' 
+import { RouteReuseStrategy } from '@angular/router';
+import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd'; 
 
 
 @NgModule({
@@ -24,10 +25,11 @@ import { RouteReuseStrategy } from '@angular/router'
     HttpModule,
     ToastrModule.forRoot(),
     SharedServicesModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgZorroAntdModule,
   ],
   providers: [    
-    { provide: RouteReuseStrategy, useClass: AppReuseStrategy }
+    { provide: RouteReuseStrategy, useClass: AppReuseStrategy },
   ],
   bootstrap: [AppComponent]
 })

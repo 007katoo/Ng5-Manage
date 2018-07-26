@@ -18,9 +18,9 @@ const routes: Routes = [
         { path: 'Table', loadChildren: './table/table.module#TableModule' },
         { path: 'Bootstrap', loadChildren: './bootstrap/bootstrap.module#BootstrapModule' },
         { path: 'Ckeditor', loadChildren: './ckeditor/ckeditor.module#CkeditorModule' },
-        { path: 'Parent', component: TestParentComponent,
+        { path: 'Parent', component: TestParentComponent, data:{title: 'Parent',reuse:true,isParentNode:true},
           children: [
-            {path: 'Child', component: TestChildComponent,data: {title: 'child', module: '/Parent/Child',reuse:true}},
+            {path: 'Child/:id', component: TestChildComponent,data: {title: 'child',reuse:true}},
           ]
         }
       ]
@@ -32,4 +32,6 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {
+
+}

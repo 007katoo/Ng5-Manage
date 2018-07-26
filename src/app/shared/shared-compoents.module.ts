@@ -1,10 +1,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReusetabComponent} from './reusetab/reusetab.component';
+import {NgZorroAntdModule} from 'ng-zorro-antd';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    NgZorroAntdModule,
   ],
   declarations: [
     ReusetabComponent,
@@ -12,7 +14,7 @@ import {ReusetabComponent} from './reusetab/reusetab.component';
   exports: [
     CommonModule,
     ReusetabComponent
-  ],
+  ]
 })
 export class SharedComponentsModule {
 }
