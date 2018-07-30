@@ -27,3 +27,12 @@
     outline:none;
     user-select:none;
 }
+
+.op {
+    visibility: hidden;
+}
+
+.reuseTab-col:hover .op {
+    display: inline-block;
+    visibility: visible;
+}

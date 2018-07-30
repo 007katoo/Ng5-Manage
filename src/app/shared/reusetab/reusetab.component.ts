@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppReuseStrategy } from '../../appReuseStrategy';
-import { regExpEscape } from '../../../../node_modules/@ng-bootstrap/ng-bootstrap/util/util';
+import { ReusetabService } from './reusetab.service';
 
 @Component({
   selector: 'reusetab',
   templateUrl: './reusetab.component.html',
   styleUrls: ['./reusetab.component.css'],
+  providers:[ReusetabService],
 })
 export class ReusetabComponent {
 
@@ -14,6 +15,7 @@ export class ReusetabComponent {
 
   constructor(
     private router:Router,
+    private reusetabService: ReusetabService,
    ) {}
 
   to(event,item) {
@@ -39,7 +41,9 @@ export class ReusetabComponent {
     if (this.list.length === 1) return;
     this.list = this.list.filter(p => p.url !== url);
     // 删除复用
+    
     AppReuseStrategy.deleteRouteSnapshot(url);
+    this.reusetabService.closeAllByRegex(url);
     if (!isSelect) return;
     // 显示上一个选中
     let menu = this.list[index - 1];

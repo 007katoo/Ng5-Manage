@@ -1,5 +1,7 @@
-import {ActivatedRouteSnapshot, Router, DetachedRouteHandle, RouteReuseStrategy} from '@angular/router';
-import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Router, DetachedRouteHandle, RouteReuseStrategy, RouterStateSnapshot} from '@angular/router';
+import {Injectable,OnInit} from '@angular/core';
+import {ReusetabService} from './shared/reusetab/reusetab.service';
+import {parent_url_dict} from './parent.url.variable';
 
 interface IRouteConfigData {
   reuse: boolean;
@@ -15,19 +17,23 @@ export class AppReuseStrategy implements RouteReuseStrategy {
   private static routeCache = new Map<string, ICachedRoute>();
   private static waitDelete: string; // 当前页未进行存储时需要删除
   private static currentDelete: string;  // 当前页存储过时需要删除
-  private router: Router;
 
-  constructor() {}
+  constructor(
+    // private routerStateSnapshot:RouterStateSnapshot,
+    // private router: Router,
+    private service:ReusetabService,
+  ) {}
 
   /** 进入路由触发，判断是否是同一路由 */
   shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-    console.log("shouldReuseRoute",future.routeConfig === curr.routeConfig,curr,future);
+    // console.log(this.router.routerState.snapshot.url);
+    this.setParentOrChildOnlyOneExit(future,curr);
+    this.service.store(future);
     if (future.routeConfig && future.routeConfig.path.indexOf(":id")!=-1) {
       if(future.params["id"]!=curr.params["id"]) {
         return false;
       }
     }
-    console.log(curr,future)
     return future.routeConfig === curr.routeConfig;
   }
 
@@ -35,10 +41,8 @@ export class AppReuseStrategy implements RouteReuseStrategy {
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
     const data = this.getRouteData(route);
     if (data) {
-      console.log("shouldDetach",route,true);
       return true;
     }
-    console.log("shouldDetach",route,false);
     return false;
   }
 
@@ -49,18 +53,17 @@ export class AppReuseStrategy implements RouteReuseStrategy {
     if (AppReuseStrategy.waitDelete && AppReuseStrategy.waitDelete === url) {
       // 如果待删除是当前路由，且未存储过则不存储快照
       AppReuseStrategy.waitDelete = null;
-      console.log("store",route,false)
       return null;
     }else {
       // 如果待删除是当前路由，且存储过则不存储快照
       if (AppReuseStrategy.currentDelete && AppReuseStrategy.currentDelete === url) {
         AppReuseStrategy.currentDelete = null;
-        console.log("store",route,false)
         return null;
       }else {
+        this.setChildOnlyOneExit(url);
         AppReuseStrategy.routeCache.set(url, { handle, data });
         this.addRedirectsRecursively(route);
-        console.log("store",route,true,AppReuseStrategy.routeCache);
+        
       }
     }
   }
@@ -68,7 +71,8 @@ export class AppReuseStrategy implements RouteReuseStrategy {
   /** 若 path 在缓存中有的都认为允许还原路由 */
   shouldAttach(route: ActivatedRouteSnapshot): boolean {
     const url = this.getFullRouteUrl(route);
-    console.log("shouldAttach",AppReuseStrategy.routeCache.has(url),url);
+    console.log(url);
+    this.service.store(route);
     return AppReuseStrategy.routeCache.has(url);
   }
 
@@ -78,7 +82,6 @@ export class AppReuseStrategy implements RouteReuseStrategy {
     var handle = AppReuseStrategy.routeCache.has(url)
     ? AppReuseStrategy.routeCache.get(url).handle
     : null;
-    console.log("retrieve",handle);
     return handle;
     
   }
@@ -132,15 +135,53 @@ export class AppReuseStrategy implements RouteReuseStrategy {
     }
   }
 
-  public static removeRouteCacheByUrlPattern(currentUrl,pattern:string) {
+  public static removeRouteCacheByUrlPattern(pattern:string,url?) {
     var patternReg = new RegExp(pattern);
     var keyIterator = AppReuseStrategy.routeCache.keys();
     var key = keyIterator.next();
     while (!key.done) {
-      if (patternReg.test(key.value)&&key.value!=currentUrl) {
-        AppReuseStrategy.deleteRouteSnapshot(key.value);
+      if (key.value !== url) {
+        if (patternReg.test(key.value)) {
+          AppReuseStrategy.deleteRouteSnapshot(key.value);
+        }
       }
       key = keyIterator.next();
+    }
+  }
+
+  /**
+   * 设置只允许父组件和子组件有且只存在一个缓存；
+   * @param future 
+   * @param curr 
+   */
+  public setParentOrChildOnlyOneExit(future,curr) {
+    var currentUrl = this.getFullRouteUrl(future);
+    for (var url in parent_url_dict) {
+      const future_url = this.service.getUrl(future);
+      const curr_url = this.service.getUrl(curr);
+      var regexArray = parent_url_dict[url];
+      var parentRegex = new RegExp(regexArray[0]);
+      var childRegex = new RegExp(regexArray[1]);
+      if ((parentRegex.test(curr_url) && childRegex.test(future_url)) || (parentRegex.test(future_url)&&childRegex.test(curr_url))) {
+        this.service.close(url,true);
+        if (new RegExp(regexArray[0]).test(url)) {
+          AppReuseStrategy.removeRouteCacheByUrlPattern(regexArray[1],url);
+          this.service.closeByRegex(regexArray[1],url);   
+        }
+      }
+    }
+  }
+
+  public setChildOnlyOneExit(url) {
+    url = "/"+url;
+    for (var parentUrl in parent_url_dict) {
+      var regexArray = parent_url_dict[parentUrl];
+      if (new RegExp(parentUrl).test(url)) {
+        if (new RegExp(regexArray[1]).test(url)) {
+          AppReuseStrategy.removeRouteCacheByUrlPattern(regexArray[1],url);
+          this.service.closeByRegex(regexArray[1],url);   
+        }
+      }
     }
   }
 

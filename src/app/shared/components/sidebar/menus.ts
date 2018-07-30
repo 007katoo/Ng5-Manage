@@ -99,15 +99,6 @@ export const menus = [
     minusActive: 'inactive',
     icon: 'fa-pencil',
     routerLink: '/Parent',
-    list: [
-      {
-        id: 1,
-        item: 'test child',
-        routerLink: '/Parent/Child',
-        icon: 'fa-list',
-        isActive: false
-      },
-    ]
   }
 ];
 

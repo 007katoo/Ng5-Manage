@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,RouterState,RouterStateSnapshot,ActivatedRouteSnapshot } from '@angular/router';
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
-import { AppReuseStrategy } from '../../appReuseStrategy';
 
 @Component({
   selector: 'app-test-parent',
@@ -59,11 +58,7 @@ export class TestParentComponent implements OnInit {
   mouseAction(name: string, event: NzFormatEmitEvent): void {
     console.log(name, event);
     if(name =="click") {
-      this.router.navigateByUrl("/Parent/Child/"+event.node.key).then(
-        function() {
-          AppReuseStrategy.removeRouteCacheByUrlPattern("/Parent/Child/"+event.node.key,"^Parent/Child/");
-        }
-      );
+      this.router.navigateByUrl("/Parent/Child/"+event.node.key);
     }
   }
 
@@ -73,5 +68,12 @@ export class TestParentComponent implements OnInit {
 
   constructor(
     private router:Router,
-  ) { }
+  ) {
+    const state: RouterState = router.routerState;
+    const snapshot: RouterStateSnapshot = state.snapshot;
+    const root: ActivatedRouteSnapshot = snapshot.root;
+    const child = root.firstChild;
+    console.log(state);
+    // const id: Observable<string> = child.params.map(p => p.id);
+   }
 }

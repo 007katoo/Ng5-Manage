@@ -1,7 +1,7 @@
 <div class="reusetab-nav">
   <div *ngFor="let node of list; let index = index" class="reuseTab-col" (click)="to($event, node)" [class.active]="node.isSelect">
-    <span>{{node.title}}</span>&nbsp;
-    <i class="iconfont icon-close" (click)="closeUrl(node.url,node.isSelect,$event)"></i>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{node.title}}</span>&nbsp;
+    <i class="iconfont icon-close op" (click)="closeUrl(node.url,node.isSelect,$event)"></i>
   </div>
 </div>
 
